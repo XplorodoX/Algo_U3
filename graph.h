@@ -57,7 +57,11 @@ struct Graph {
         // Knoten v enthält, erzeugt a[v] automatisch einen neuen
         // Eintrag mit einer leeren Liste von Nachfolgern, auf die
         // direkt push_back angewandt werden kann.
-
+        map<V, list<V>> a;
+        for (V u : vertices())
+            for (V v : successors(u))
+                a[v].push_back(u);
+        return Graph<V>(a);
     }
 };
 
