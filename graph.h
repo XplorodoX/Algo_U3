@@ -57,6 +57,7 @@ struct Graph {
         // Knoten v enthält, erzeugt a[v] automatisch einen neuen
         // Eintrag mit einer leeren Liste von Nachfolgern, auf die
         // direkt push_back angewandt werden kann.
+
     }
 };
 
@@ -172,19 +173,25 @@ struct SP : Pred<V>, Dist<V, double> {};
 // Breitensuche im Graphen g mit Startknoten s ausführen
 // und das Ergebnis in res speichern.
 template <typename V, typename G>
-void bfs (G g, V s, BFS<V>& res)
+void bfs (G g, V s, BFS<V>& res){
+
+}
 
 // Tiefensuche im Graphen g ausführen und das Ergebnis in res speichern.
 // In der Hauptschleife des Algorithmus werden die Knoten in der
 // Reihenfolge des Containers g.vertices() durchlaufen.
 template <typename V, typename G>
-void dfs (G g, DFS<V>& res)
+void dfs (G g, DFS<V>& res){
+
+}
 
 // Tiefensuche im Graphen g ausführen und das Ergebnis in res speichern.
 // In der Hauptschleife des Algorithmus werden die Knoten in der
 // Reihenfolge der Liste vs durchlaufen.
 template <typename V, typename G>
-void dfs (G g, list<V> vs, DFS<V>& res)
+void dfs (G g, list<V> vs, DFS<V>& res){
+
+}
 
 // Topologische Sortierung des Graphen g ausführen und das Ergebnis
 // als Liste von Knoten in seq speichern.
@@ -192,13 +199,17 @@ void dfs (G g, list<V> vs, DFS<V>& res)
 // false, wenn der Graph einen Zyklus enthält.
 // (Im zweiten Fall darf der Inhalt von seq danach undefiniert sein.)
 template <typename V, typename G>
-bool topsort (G g, list<V>& seq)
+bool topsort (G g, list<V>& seq){
+
+}
 
 // Die starken Zusammenhangskomponenten des Graphen g ermitteln
 // und das Ergebnis als Liste von Listen von Knoten in res speichern.
 // (Jedes Element von res entspricht einer starken Zusammenhangskomponente.)
 template <typename V, typename G>
-void scc (G g, list<list<V>>& res)
+void scc (G g, list<list<V>>& res){
+
+}
 
 // Minimalgerüst des Graphen g mit dem modifizierten Algorithmus von
 // Prim mit Startknoten s bestimmen und das Ergebnis in res speichern.
@@ -211,7 +222,9 @@ void scc (G g, list<list<V>>& res)
 // Trotzdem kann die Funktion intern natürlich ein entsprechendes
 // Dist-Objekt verwenden.
 template <typename V, typename G>
-void prim (G g, V s, Pred<V>& res)
+void prim (G g, V s, Pred<V>& res){
+
+}
 
 // Kürzeste Wege vom Startknoten s zu allen Knoten des Graphen g mit
 // dem Algorithmus von Bellman-Ford ermitteln und das Ergebnis in res
@@ -220,7 +233,9 @@ void prim (G g, V s, Pred<V>& res)
 // erreichbaren Zyklus mit negativem Gewicht gibt, andernfalls false.
 // (Im zweiten Fall darf der Inhalt von res danach undefiniert sein.)
 template <typename V, typename G>
-bool bellmanFord (G g, V s, SP<V>& res)
+bool bellmanFord (G g, V s, SP<V>& res){
+
+}
 
 // Kürzeste Wege vom Startknoten s zu allen Knoten des Graphen g mit
 // dem Algorithmus von Dijkstra ermitteln und das Ergebnis in res
@@ -228,4 +243,6 @@ bool bellmanFord (G g, V s, SP<V>& res)
 // Die Kanten des Graphen dürfen keine negativen Gewichte besitzen.
 // (Dies muss nicht überprüft werden.)
 template <typename V, typename G>
-void dijkstra (G g, V s, SP<V>& res)
+void dijkstra (G g, V s, SP<V>& res){
+
+}
