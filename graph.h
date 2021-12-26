@@ -178,7 +178,26 @@ struct SP : Pred<V>, Dist<V, double> {};
 // und das Ergebnis in res speichern.
 template <typename V, typename G>
 void bfs (G g, V s, BFS<V>& res){
+    for(auto v : g.vertices()) {
+        res.dist[v] = res.INF;
+        res.pred[v] = res.NIL;
+    }
+    res.dist[s] = 0;
 
+    list<V> q;
+    q.push_back(s);
+
+    while (q.size() != 0){
+        V u = q.front();
+        q.pop_front();
+        for (auto v : g.successors(u)){
+            if (res.dist[v] == res.INF){
+                res.dist[v] = res.dist[u] + 1;
+                res.pred[v] = u;
+                q.push_back(v);
+            }
+        }
+    }
 }
 
 // Tiefensuche im Graphen g ausführen und das Ergebnis in res speichern.
