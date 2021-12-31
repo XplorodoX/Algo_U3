@@ -263,7 +263,10 @@ void dfs (G g, list<V> vs, DFS<V>& res){
 // (Im zweiten Fall darf der Inhalt von seq danach undefiniert sein.)
 template <typename V, typename G>
 bool topsort (G g, list<V>& seq){
-    return false;
+    DFS<V> res;
+    dfs(g, res);
+    seq = res.seq;
+    return res.seq.size() == g.vertices().size();
 }
 
 // Die starken Zusammenhangskomponenten des Graphen g ermitteln
@@ -271,7 +274,8 @@ bool topsort (G g, list<V>& seq){
 // (Jedes Element von res entspricht einer starken Zusammenhangskomponente.)
 template <typename V, typename G>
 void scc (G g, list<list<V>>& res){
-    return;
+
+
 }
 
 // Minimalgerüst des Graphen g mit dem modifizierten Algorithmus von

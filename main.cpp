@@ -18,7 +18,9 @@ Graph<V>* graphs [] = {
         new Graph<string>({
                                   { "A", { "B", "C" } },	// Knoten A hat Nachfolger B und C.
                                   { "B", { } },		// Knoten B hat keine Nachfolger.
-                                  { "C", { "C" } }	// Knoten C hat sich selbst als Nachfolger.
+                                  { "C", { "D" } },	// Knoten C hat sich selbst als Nachfolger.
+                                  { "D", { "E" } },	// Knoten D hat Nachfolger E.
+                                  { "E", { } }		// Knoten E hat keine Nachfolger.
                           }),
 
         // Beispiel eines gewichteten Graphen.
