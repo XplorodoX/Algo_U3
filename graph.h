@@ -154,9 +154,7 @@ struct BFS : Pred<V>, Dist<V, uint> {};
 // Ergebnis einer Tiefensuche.
 template <typename V>
 struct DFS {
-
     enum color { WHITE, GRAY, BLACK };
-
     // Tabellen zur Speicherung der Entdeckungszeit det[v] und der
     // Abschlusszeit fin[v] eines Knotens v.
     // Beide Zeitwerte liegen zwischen 1 und der doppelten Knotenzahl
@@ -244,7 +242,18 @@ void DFSVisit(G g, V v, uint& time, DFS<V>& res) {
 // Reihenfolge der Liste vs durchlaufen.
 template <typename V, typename G>
 void dfs (G g, list<V> vs, DFS<V>& res){
+    for(auto v : g.vertices()) {
+        res.color_map[v] = DFS<V>::WHITE;
+        res.det[v] = 0;
+        res.fin[v] = 0;
+    }
 
+    uint time = 0;
+    for (auto v : vs) {
+        if (res.color_map[v] == DFS<V>::WHITE) {
+            DFSVisit(g, v, time, res);
+        }
+    }
 }
 
 // Topologische Sortierung des Graphen g ausführen und das Ergebnis
