@@ -58,9 +58,11 @@ struct Graph {
         // Eintrag mit einer leeren Liste von Nachfolgern, auf die
         // direkt push_back angewandt werden kann.
         map<V, list<V>> a;
-        for (V u : vertices())
-            for (V v : successors(u))
+        for (V u : vertices()){
+            for (V v : successors(u)) {
                 a[v].push_back(u);
+            }
+        }
         return Graph<V>(a);
     }
 };
@@ -152,12 +154,15 @@ struct BFS : Pred<V>, Dist<V, uint> {};
 // Ergebnis einer Tiefensuche.
 template <typename V>
 struct DFS {
+
+    enum color { WHITE, GRAY, BLACK };
+
     // Tabellen zur Speicherung der Entdeckungszeit det[v] und der
     // Abschlusszeit fin[v] eines Knotens v.
     // Beide Zeitwerte liegen zwischen 1 und der doppelten Knotenzahl
     // des Graphen.
     map<V, uint> det, fin;
-
+    map<V, color> color_map;
     // Liste zur Speicherung aller Knoten des Graphen nach aufsteigenden
     // Abschlusszeiten, die damit gleichzeitig das Ergebnis einer
     // erfolgreichen topologischen Sortierung ist.
@@ -200,12 +205,38 @@ void bfs (G g, V s, BFS<V>& res){
     }
 }
 
+
 // Tiefensuche im Graphen g ausführen und das Ergebnis in res speichern.
 // In der Hauptschleife des Algorithmus werden die Knoten in der
 // Reihenfolge des Containers g.vertices() durchlaufen.
 template <typename V, typename G>
-void dfs (G g, DFS<V>& res){
+void dfs (G g, DFS<V>& res) {
+    for (auto v : g.vertices()) {
+        res.color_map[v] = DFS<V>::WHITE;
+        res.det[v] = 0;
+        res.fin[v] = 0;
+    }
 
+    uint time = 0;
+    for (auto v : g.vertices()) {
+        if (res.color_map[v] == DFS<V>::WHITE) {
+            DFSVisit(g, v, time, res);
+        }
+    }
+}
+
+template <typename V, typename G>
+void DFSVisit(G g, V v, uint& time, DFS<V>& res) {
+    res.color_map[v] = DFS<V>::GRAY;
+    res.det[v] = ++time;
+    for (auto u : g.successors(v)) {
+        if (res.color_map[u] == DFS<V>::WHITE) {
+            DFSVisit(g, u, time, res);
+        }
+    }
+    res.color_map[v] = DFS<V>::BLACK;
+    res.fin[v] = ++time;
+    res.seq.push_front(v);
 }
 
 // Tiefensuche im Graphen g ausführen und das Ergebnis in res speichern.
@@ -223,7 +254,7 @@ void dfs (G g, list<V> vs, DFS<V>& res){
 // (Im zweiten Fall darf der Inhalt von seq danach undefiniert sein.)
 template <typename V, typename G>
 bool topsort (G g, list<V>& seq){
-
+    return false;
 }
 
 // Die starken Zusammenhangskomponenten des Graphen g ermitteln
@@ -231,7 +262,7 @@ bool topsort (G g, list<V>& seq){
 // (Jedes Element von res entspricht einer starken Zusammenhangskomponente.)
 template <typename V, typename G>
 void scc (G g, list<list<V>>& res){
-
+    return;
 }
 
 // Minimalgerüst des Graphen g mit dem modifizierten Algorithmus von
@@ -246,7 +277,7 @@ void scc (G g, list<list<V>>& res){
 // Dist-Objekt verwenden.
 template <typename V, typename G>
 void prim (G g, V s, Pred<V>& res){
-
+    return;
 }
 
 // Kürzeste Wege vom Startknoten s zu allen Knoten des Graphen g mit
@@ -257,7 +288,7 @@ void prim (G g, V s, Pred<V>& res){
 // (Im zweiten Fall darf der Inhalt von res danach undefiniert sein.)
 template <typename V, typename G>
 bool bellmanFord (G g, V s, SP<V>& res){
-
+    return false;
 }
 
 // Kürzeste Wege vom Startknoten s zu allen Knoten des Graphen g mit
@@ -267,5 +298,5 @@ bool bellmanFord (G g, V s, SP<V>& res){
 // (Dies muss nicht überprüft werden.)
 template <typename V, typename G>
 void dijkstra (G g, V s, SP<V>& res){
-
+    return;
 }

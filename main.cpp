@@ -56,8 +56,9 @@ void path (V s, V v, Pred<V>& res) {
 // Kommandozeilenargument (Standardwert ist "A").
 int main (int argc, char* argv []) {
     // Kommandozeilenargumente.
-    string a = argv[1];				// Algorithmus.
-    Graph<V>* g = graphs[stoi(argv[2])];	// Graph.
+    //string a = argv[1];				// Algorithmus.
+    string a = "dfs";
+    Graph<V>* g = graphs[stoi("1")];	// Graph.
     V s = argc > 3 ? argv[3] : "A";		// Startknoten.
 
     // Gewünschten Algorithmus ausführen und sein Ergebnis ausgeben.
