@@ -290,6 +290,32 @@ void scc (G g, list<list<V>>& res){
 // Dist-Objekt verwenden.
 template <typename V, typename G>
 void prim (G g, V s, Pred<V>& res){
+	
+	Dist<V, uint> res1;
+	Entry<int, V>* e;
+	PrioQueue<int, V> Prio;
+	for(auto v : g.vertices()){
+		if(v != s) {
+			Prio.insert(res1.INF, v);
+			res.pred[v] = res.NIL;
+		}
+	}
+
+	res.pred[s] = res.NIL;
+	V u = s;
+
+	while(Prio.isEmpty() != true){
+
+		for(auto v : g.successors(u)){
+			if(g.weight(u, v) < res1.dist[v] && Prio.contains(e)){
+			Prio.changePrio(e, g.weight(u, v));
+			res.pred[v] = u;
+			}
+		}
+		
+		Prio.remove(e);
+	}
+
     return;
 }
 
