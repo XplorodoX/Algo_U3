@@ -234,7 +234,7 @@ void DFSVisit(G g, V v, uint& time, DFS<V>& res) {
     }
     res.color_map[v] = DFS<V>::BLACK;
     res.fin[v] = ++time;
-    res.seq.push_front(v);
+    res.seq.push_back(v);
 }
 
 // Tiefensuche im Graphen g ausführen und das Ergebnis in res speichern.
@@ -291,33 +291,30 @@ void scc (G g, list<list<V>>& res){
 template <typename V, typename G>
 void prim (G g, V s, Pred<V>& res){
 	
-	Dist<V, int> res1;
+	Dist<V, uint> res1;
 	Entry<int, V>* e;
 	PrioQueue<int, V> Prio;
-	
-	
 	for(auto v : g.vertices()){
-		if(v != s){
-			e = Prio.insert(res1.INF, v);
+		if(v != s) {
+			Prio.insert(res1.INF, v);
 			res.pred[v] = res.NIL;
 		}
 	}
-	
+
 	res.pred[s] = res.NIL;
 	V u = s;
 
-	while(Prio.isEmpty() == false){
+	while(Prio.isEmpty() != true){
 
 		for(auto v : g.successors(u)){
-			if((g.weight(u, v) > res1.dist[v]) && Prio.contains(e)){
-				Prio.changePrio(e, g.weight(u, v));
-				res.pred[v] = u;
+			if(g.weight(u, v) < res1.dist[v] && Prio.contains(e)){
+			Prio.changePrio(e, g.weight(u, v));
+			res.pred[v] = u;
 			}
 		}
 		
-		Prio.extractMinimum();
+		Prio.remove(e);
 	}
-
     return;
 }
 
