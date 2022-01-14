@@ -275,7 +275,6 @@ bool topsort (G g, list<V>& seq){
 template <typename V, typename G>
 void scc (G g, list<list<V>>& res){
 
-
 }
 
 // Minimalgerüst des Graphen g mit dem modifizierten Algorithmus von
@@ -315,7 +314,14 @@ void prim (G g, V s, Pred<V>& res){
 		
 		Prio.remove(e);
 	}
-    return;
+}
+
+template <typename V, typename G>
+void hilfsfunktion (SP<V>& res, V v, V u, G g){
+    if(res.dist[u] + g.weight(u, v) < res.dist[v]){
+        res.dist[v] = res.dist[u] + g.weight(u, v);
+        res.pred[v] = u;
+    }
 }
 
 // Kürzeste Wege vom Startknoten s zu allen Knoten des Graphen g mit
@@ -326,7 +332,29 @@ void prim (G g, V s, Pred<V>& res){
 // (Im zweiten Fall darf der Inhalt von res danach undefiniert sein.)
 template <typename V, typename G>
 bool bellmanFord (G g, V s, SP<V>& res){
-    return false;
+    auto anzahl = g.vertices().size();
+    for (auto v : g.vertices()) {
+        res.dist[v] = res.INF;
+        res.pred[v] = res.NIL;
+    }
+    res.dist[s] = 0;
+
+    for(int i = 0; i < (anzahl - 1); i++){
+        for(auto u : g.vertices()){
+            for(auto v : g.successors(u)){
+                hilfsfunktion(res, v, u, g);
+            }
+        }
+    }
+
+    for(auto u : g.vertices()) {
+        for (auto v: g.successors(u)) {
+            if (res.dist[u] + g.weight(u, v) < res.dist[v]) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 // Kürzeste Wege vom Startknoten s zu allen Knoten des Graphen g mit

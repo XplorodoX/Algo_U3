@@ -30,6 +30,15 @@ Graph<V>* graphs [] = {
                                           { "B", { } },		// Keine Kanten B -> ...
                                           { "C", { { "C", 4 } } }	// Kante C -> C mit Gewicht 4.
                                   }),
+        new WeightedGraph<string>({
+                                          { "A", { { "B", 3 }, { "E", 1 }, { "F", 5 } } },
+                                          // Kanten A -> B mit Gewicht 2 und A -> C mit Gewicht 3.
+                                          { "B", { { "A", 3}, { "C",8}, { "D", 7 }, { "E", 2 }, { "F", 5 }} },        // Keine Kanten B -> ...
+                                          { "C", { { "B", 8 }, { "D", 5 }, { "E", 7 } } },    // Kante C -> C mit Gewicht 4.
+                                          { "D", { { "B", 7 }, { "C", 5 }, { "E", 8 } } },
+                                          { "E", { { "A", 1 }, { "B", 2 }, { "C", 7 }, { "D", 8 }, { "F", 4 } } },
+                                          { "F", { { "A", 5 }, { "B", 5 }, { "E", 4 } } },
+                                  }),
 };
 
 // Weg vom Startknoten s zum Knoten v anhand der Vorgängerinformation
