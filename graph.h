@@ -290,30 +290,35 @@ void scc (G g, list<list<V>>& res){
 template <typename V, typename G>
 void prim (G g, V s, Pred<V>& res){
 	
-	Dist<V, uint> res1;
+	Dist<V, int> res1;
 	Entry<int, V>* e;
 	PrioQueue<int, V> Prio;
+	
 	for(auto v : g.vertices()){
-		if(v != s) {
+		if(v != s){
 			Prio.insert(res1.INF, v);
 			res.pred[v] = res.NIL;
+			res1.dist[v] = res1.INF;
 		}
 	}
-
+	 
 	res.pred[s] = res.NIL;
+	res1.dist[s] = res1.INF;
 	V u = s;
+	e = Prio.insert(res1.dist[s], s);
 
-	while(Prio.isEmpty() != true){
-
+	while(Prio.isEmpty() == false){
 		for(auto v : g.successors(u)){
-			if(g.weight(u, v) < res1.dist[v] && Prio.contains(e)){
-			Prio.changePrio(e, g.weight(u, v));
-			res.pred[v] = u;
+			if(Prio.contains(e) && g.weight(u, v) < res1.dist[v]){
+				Prio.changePrio(e, g.weight(u, v));
+				res.pred[v] = u;
 			}
 		}
-		
-		Prio.remove(e);
+		e = Prio.extractMinimum();
+		u = e->data;
+		res1.dist[u] = e->prio;
 	}
+    return;
 }
 
 template <typename V, typename G>
@@ -364,5 +369,32 @@ bool bellmanFord (G g, V s, SP<V>& res){
 // (Dies muss nicht überprüft werden.)
 template <typename V, typename G>
 void dijkstra (G g, V s, SP<V>& res){
+	
+	PrioQueue<double, V> Prio;
+	Entry<double, V>* e;
+
+	for(auto v : g.vertices()){
+		res.dist[v] = res.INF;
+		res.pred[v] = res.NIL;
+		Prio.insert(res.dist[v], v);
+	}
+	
+	res.dist[s] = 0;
+	
+	for(auto v : g.vertices()){
+		e = Prio.insert(res.dist[v], v);
+	}
+
+	while(Prio.isEmpty() == false){
+		e = Prio.extractMinimum();
+		V u = e->data;
+		for(auto v : g.successors(u)){
+			if(res.dist[u] + g.weight(u, v) < res.dist[v]){
+			res.dist[v] = res.dist[u] + g.weight(u, v);
+			res.pred[v] = u;
+			Prio.changePrio(e, res.dist[v]);
+			}
+		}
+	}
     return;
 }
