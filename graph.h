@@ -258,7 +258,7 @@ void dfs (G g, list<V> vs, DFS<V>& res){
 
 // Topologische Sortierung des Graphen g ausführen und das Ergebnis
 // als Liste von Knoten in seq speichern.
-// Resultatwert true, wenn dies möglich ist,
+// Resultatwert true, wenn ies möglich ist,
 // false, wenn der Graph einen Zyklus enthält.
 // (Im zweiten Fall darf der Inhalt von seq danach undefiniert sein.)
 template <typename V, typename G>
