@@ -155,6 +155,7 @@ struct BFS : Pred<V>, Dist<V, uint> {};
 template <typename V>
 struct DFS {
     enum color { WHITE, GRAY, BLACK };
+    bool sorted = false;
     // Tabellen zur Speicherung der Entdeckungszeit det[v] und der
     // Abschlusszeit fin[v] eines Knotens v.
     // Beide Zeitwerte liegen zwischen 1 und der doppelten Knotenzahl
@@ -231,6 +232,9 @@ void DFSVisit(G g, V v, uint& time, DFS<V>& res) {
         if (res.color_map[u] == DFS<V>::WHITE) {
             DFSVisit(g, u, time, res);
         }
+        if(res.color_map[u] == DFS<V>::GRAY && res.sorted == true) {
+            throw false;
+        }
     }
     res.color_map[v] = DFS<V>::BLACK;
     res.fin[v] = ++time;
@@ -264,9 +268,16 @@ void dfs (G g, list<V> vs, DFS<V>& res){
 template <typename V, typename G>
 bool topsort (G g, list<V>& seq){
     DFS<V> res;
-    dfs(g, res);
-    seq = res.seq;
-    return res.seq.size() == g.vertices().size();
+    res.sorted = true;
+    bool b1 = true;
+    try {
+        dfs(g, res);
+        seq = res.seq;
+    } catch (bool& b) {
+        b1 = b;
+        return b1;
+    }
+    return b1;
 }
 
 // Die starken Zusammenhangskomponenten des Graphen g ermitteln
@@ -321,11 +332,13 @@ void prim (G g, V s, Pred<V>& res){
     return;
 }
 
+
 template <typename V, typename G>
 void hilfsfunktion (SP<V>& res, V v, V u, G g){
     if(res.dist[u] + g.weight(u, v) < res.dist[v]){
         res.dist[v] = res.dist[u] + g.weight(u, v);
         res.pred[v] = u;
+        return;
     }
 }
 

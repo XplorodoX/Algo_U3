@@ -20,7 +20,7 @@ Graph<V>* graphs [] = {
                                   { "B", { } },		// Knoten B hat keine Nachfolger.
                                   { "C", { "D" } },	// Knoten C hat sich selbst als Nachfolger.
                                   { "D", { "E" } },	// Knoten D hat Nachfolger E.
-                                  { "E", { } }		// Knoten E hat keine Nachfolger.
+                                  { "E", {  } }		// Knoten E hat keine Nachfolger.
                           }),
 
         // Beispiel eines gewichteten Graphen.
