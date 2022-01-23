@@ -338,7 +338,6 @@ void hilfsfunktion (SP<V>& res, V v, V u, G g){
     if(res.dist[u] + g.weight(u, v) < res.dist[v]){
         res.dist[v] = res.dist[u] + g.weight(u, v);
         res.pred[v] = u;
-        return;
     }
 }
 
@@ -385,6 +384,7 @@ void dijkstra (G g, V s, SP<V>& res){
 	
 	PrioQueue<double, V> Prio;
 	Entry<double, V>* e;
+    map<V, Entry<double, V>* > entry;
 
 	for(auto v : g.vertices()){
 		res.dist[v] = res.INF;
@@ -401,13 +401,12 @@ void dijkstra (G g, V s, SP<V>& res){
 	while(Prio.isEmpty() == false){
 		e = Prio.extractMinimum();
 		V u = e->data;
-		for(auto v : g.successors(u)){
-			if(res.dist[u] + g.weight(u, v) < res.dist[v]){
-			res.dist[v] = res.dist[u] + g.weight(u, v);
-			res.pred[v] = u;
-			Prio.changePrio(e, res.dist[v]);
-			}
-		}
+		for(auto v : g.successors(u)) {
+            if (res.dist[u] + g.weight(u, v) < res.dist[v]) {
+                res.dist[v] = res.dist[u] + g.weight(u, v);
+                res.pred[v] = u;
+                Prio.changePrio(e, res.dist[v]);
+            }
+        }
 	}
-    return;
 }
