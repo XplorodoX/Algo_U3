@@ -384,7 +384,6 @@ void dijkstra (G g, V s, SP<V>& res){
 	
 	PrioQueue<double, V> Prio;
 	Entry<double, V>* e;
-    map<V, Entry<double, V>* > entry;
 
 	for(auto v : g.vertices()){
 		res.dist[v] = res.INF;
