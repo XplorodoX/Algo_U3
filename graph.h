@@ -295,12 +295,12 @@ void scc (G g, list<list<V>>& res){
     DFS<V>res2;
     dfs(g.transpose(), seq_rev, res2);
     list<V> seq2 = res2.seq;
-    // Ergebnis in res speichern (Liste von Listen von Knoten)
+    //seq2 ausgeben
     for (auto v : seq2) {
-        list<V> l;
-        l.push_back(v);
-        res.push_back(l);
+        cout << v << " ";
     }
+    cout << endl;
+    // Ergebnis in res speichern (Liste von Listen von Knoten)
 }
 
 // Minimalgerüst des Graphen g mit dem modifizierten Algorithmus von
