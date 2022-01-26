@@ -58,8 +58,8 @@ struct Graph {
         // Eintrag mit einer leeren Liste von Nachfolgern, auf die
         // direkt push_back angewandt werden kann.
         map<V, list<V>> a;
-        for (V u : vertices()){
-            for (V v : successors(u)) {
+        for (V u : vertices()) {
+            for (V v: successors(u)) {
                 a[v].push_back(u);
             }
         }
@@ -285,7 +285,22 @@ bool topsort (G g, list<V>& seq){
 // (Jedes Element von res entspricht einer starken Zusammenhangskomponente.)
 template <typename V, typename G>
 void scc (G g, list<list<V>>& res){
-
+    DFS<V> res1;
+    dfs(g, res1);
+    list<V> seq = res1.seq;
+    //Knoten in der Reihenfolge der Liste res1.seq durchlaufen
+    DFS<V> res2;
+    dfs(g.transpose(), seq, res2);
+    for (auto v : seq) {
+        cout << v << " ";
+    }
+    cout << endl;
+    list<V> l;
+    for (auto u : res2.seq) {
+        l.push_back(u);
+    }
+    //l in res speichern
+    res.push_back(l);
 }
 
 // Minimalgerüst des Graphen g mit dem modifizierten Algorithmus von
@@ -331,7 +346,6 @@ void prim (G g, V s, Pred<V>& res){
 	}
     return;
 }
-
 
 template <typename V, typename G>
 void hilfsfunktion (SP<V>& res, V v, V u, G g){
