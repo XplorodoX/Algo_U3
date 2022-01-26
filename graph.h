@@ -288,19 +288,19 @@ void scc (G g, list<list<V>>& res){
     DFS<V> res1;
     dfs(g, res1);
     list<V> seq = res1.seq;
-    //Knoten in der Reihenfolge der Liste res1.seq durchlaufen
-    DFS<V> res2;
-    dfs(g.transpose(), seq, res2);
+    list<V> seq_rev;
     for (auto v : seq) {
-        cout << v << " ";
+        seq_rev.push_front(v);
     }
-    cout << endl;
-    list<V> l;
-    for (auto u : res2.seq) {
-        l.push_back(u);
+    DFS<V>res2;
+    dfs(g.transpose(), seq_rev, res2);
+    list<V> seq2 = res2.seq;
+    // Ergebnis in res speichern (Liste von Listen von Knoten)
+    for (auto v : seq2) {
+        list<V> l;
+        l.push_back(v);
+        res.push_back(l);
     }
-    //l in res speichern
-    res.push_back(l);
 }
 
 // Minimalgerüst des Graphen g mit dem modifizierten Algorithmus von
