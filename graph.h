@@ -241,6 +241,23 @@ void DFSVisit(G g, V v, uint& time, DFS<V>& res) {
     res.seq.push_back(v);
 }
 
+template <typename V, typename G>
+void DFSVisit_n(G g, V v, uint& time, DFS<V>& res) {
+    res.color_map[v] = DFS<V>::GRAY;
+    res.det[v] = ++time;
+    res.seq.push_back(v);
+    for (auto u : g.successors(v)) {
+        if (res.color_map[u] == DFS<V>::WHITE) {
+            DFSVisit(g, u, time, res);
+        }
+        if(res.color_map[u] == DFS<V>::GRAY && res.sorted == true) {
+            throw false;
+        }
+    }
+    res.color_map[v] = DFS<V>::BLACK;
+    res.fin[v] = ++time;
+}
+
 // Tiefensuche im Graphen g ausführen und das Ergebnis in res speichern.
 // In der Hauptschleife des Algorithmus werden die Knoten in der
 // Reihenfolge der Liste vs durchlaufen.
@@ -284,23 +301,25 @@ bool topsort (G g, list<V>& seq){
 // und das Ergebnis als Liste von Listen von Knoten in res speichern.
 // (Jedes Element von res entspricht einer starken Zusammenhangskomponente.)
 template <typename V, typename G>
-void scc (G g, list<list<V>>& res){
+void scc (G g, list<list<V>>& res) {
     DFS<V> res1;
+    DFS<V> res2;
+    list <V> seq;
+
     dfs(g, res1);
-    list<V> seq = res1.seq;
-    list<V> seq_rev;
-    for (auto v : seq) {
-        seq_rev.push_front(v);
+    seq = res1.seq;
+    seq.reverse();
+
+    dfs(g.transpose(), seq, res2);
+    list<V> scc_list = res2.seq;
+    scc_list.reverse();
+
+    map<V, list<V>> final;
+    for(auto v : scc_list) {
+        final[v] = list<V>();
     }
-    DFS<V>res2;
-    dfs(g.transpose(), seq_rev, res2);
-    list<V> seq2 = res2.seq;
-    //seq2 ausgeben
-    for (auto v : seq2) {
-        cout << v << " ";
-    }
-    cout << endl;
-    // Ergebnis in res speichern (Liste von Listen von Knoten)
+
+
 }
 
 // Minimalgerüst des Graphen g mit dem modifizierten Algorithmus von
@@ -315,7 +334,6 @@ void scc (G g, list<list<V>>& res){
 // Dist-Objekt verwenden.
 template <typename V, typename G>
 void prim (G g, V s, Pred<V>& res){
-	
 	Dist<V, int> res1;
 	Entry<int, V>* e;
 	PrioQueue<int, V> Prio;
@@ -329,22 +347,18 @@ void prim (G g, V s, Pred<V>& res){
 	}
 	 
 	res.pred[s] = res.NIL;
-	res1.dist[s] = res1.INF;
 	V u = s;
-	e = Prio.insert(res1.dist[s], s);
 
 	while(Prio.isEmpty() == false){
 		for(auto v : g.successors(u)){
+
 			if(Prio.contains(e) && g.weight(u, v) < res1.dist[v]){
 				Prio.changePrio(e, g.weight(u, v));
 				res.pred[v] = u;
 			}
 		}
 		e = Prio.extractMinimum();
-		u = e->data;
-		res1.dist[u] = e->prio;
 	}
-    return;
 }
 
 template <typename V, typename G>
