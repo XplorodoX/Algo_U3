@@ -311,15 +311,28 @@ void scc (G g, list<list<V>>& res) {
     seq.reverse();
 
     dfs(g.transpose(), seq, res2);
-    list<V> scc_list = res2.seq;
+    list <V> scc_list = res2.seq;
     scc_list.reverse();
 
-    map<V, list<V>> final;
-    for(auto v : scc_list) {
-        final[v] = list<V>();
+    int merker_det = -1, merker_fin = -1;
+    list <V> l, final_list;
+    for (auto v: scc_list) {
+        if (merker_det == -1 && merker_fin == -1) {
+            merker_det = res2.det[v];
+            merker_fin = res2.fin[v];
+        }
+
+        if (res2.det[v] >= merker_det && merker_fin >= res2.fin[v]) {
+            l.push_back(v);
+        } else {
+            res.push_front(l);
+            l.clear();
+            merker_det = res2.det[v];
+            merker_fin = res2.fin[v];
+            l.push_back(v);
+        }
     }
-
-
+    res.push_front(l);
 }
 
 // Minimalgerüst des Graphen g mit dem modifizierten Algorithmus von
@@ -369,7 +382,13 @@ void prim (G g, V s, Pred<V>& res){
     return;
 }
 
-
+template <typename V, typename G>
+void hilfsfunktion (SP<V>& res, V v, V u, G g){
+    if(res.dist[u] + g.weight(u, v) < res.dist[v]){
+        res.dist[v] = res.dist[u] + g.weight(u, v);
+        res.pred[v] = u;
+    }
+}
 // Kürzeste Wege vom Startknoten s zu allen Knoten des Graphen g mit
 // dem Algorithmus von Bellman-Ford ermitteln und das Ergebnis in res
 // speichern.
